@@ -6,5 +6,8 @@ package com.bridgelabz.addressbookapp.exceptions;
  * version 0.0.1
  * @since 13-10-2021
  */
-public class AddressBookException {
+public class AddressBookException extends RuntimeException {
+    public AddressBookException(String message) {
+        super(message);
+    }
 }

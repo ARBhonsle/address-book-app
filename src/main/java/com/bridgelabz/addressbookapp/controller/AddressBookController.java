@@ -43,6 +43,7 @@ public class AddressBookController {
      *
      * @param id url path of http request
      * @return ResponseEntity<ResponseDto>
+     * @throws AddressBookException
      */
     @GetMapping(value = "/get/{id}")
     public ResponseEntity<ResponseDto> getAddressBookByID(@PathVariable int id) {
@@ -70,6 +71,7 @@ public class AddressBookController {
      * @param id             url path of http request
      * @param addressBookDto in RequestBody
      * @return ResponseEntity<ResponseDto>
+     * @throws AddressBookException
      */
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id, @RequestBody AddressBookDto addressBookDto) {
@@ -83,6 +85,7 @@ public class AddressBookController {
      *
      * @param id url path of http request
      * @return ResponseEntity<ResponseDto>
+     * @throws AddressBookException
      */
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<ResponseDto> getAddressBookList(@PathVariable int id) {

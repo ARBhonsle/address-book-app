@@ -38,9 +38,10 @@ public class AddressBookServices {
      * method finds address book by id
      * @param id identifier in repository
      * @return address book
+     * @throws AddressBookException
      */
     public AddressBook findAddressBookById(int id) throws AddressBookException {
-        return addressBookRepository.findById(id).get();
+        return addressBookRepository.findById(id).orElseThrow(() -> new AddressBookException("Cannot find Address book by id: " + id));
     }
 
     /**
@@ -60,8 +61,9 @@ public class AddressBookServices {
      * @param id identifier in repository
      * @param addressBookDto data stored in repository
      * @return address book
+     * @throws AddressBookException
      */
-    public AddressBook updateAddressBook(int id, AddressBookDto addressBookDto) {
+    public AddressBook updateAddressBook(int id, AddressBookDto addressBookDto) throws AddressBookException{
         AddressBook addressBook = this.findAddressBookById(id);
         modelMapper.map(addressBookDto, addressBook);
         addressBookRepository.save(addressBook);
@@ -72,8 +74,9 @@ public class AddressBookServices {
      * method deletes address book by id
      * @param id identifier in repository
      * @return address book
+     * @throws AddressBookException
      */
-    public String deleteAddressBook(int id) {
+    public String deleteAddressBook(int id) throws AddressBookException {
         AddressBook addressBook = this.findAddressBookById(id);
         addressBookRepository.delete(addressBook);
         return "Successfully deleted address book by id: " + id;
