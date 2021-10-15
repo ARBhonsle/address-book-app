@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbookapp.services;
 
+import com.bridgelabz.addressbookapp.constants.Message;
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
 import com.bridgelabz.addressbookapp.model.AddressBook;
@@ -41,7 +42,7 @@ public class AddressBookServices {
      * @throws AddressBookException
      */
     public AddressBook findAddressBookById(int addressBookId) throws AddressBookException {
-        return addressBookList.stream().filter(addressBookData->addressBookData.getId()==addressBookId).findFirst().orElseThrow(() -> new AddressBookException("Cannot find Address book by addressBookId: " + addressBookId));
+        return addressBookList.stream().filter(addressBookData->addressBookData.getId()==addressBookId).findFirst().orElseThrow(() -> new AddressBookException(Message.EXCEPTION_WHILE_FINDING_ID.getMessage()));
     }
 
     /**
@@ -79,6 +80,6 @@ public class AddressBookServices {
     public String deleteAddressBook(int addressBookId) throws AddressBookException {
         AddressBook addressBook = this.findAddressBookById(addressBookId);
         addressBookList.remove(addressBook);
-        return "Successfully deleted address book by addressBookId: " + addressBookId;
+        return Message.DELETE_SUCCESS_RESPONSE.getMessage();
     }
 }

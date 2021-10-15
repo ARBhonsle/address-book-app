@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbookapp.exceptions;
 
+import com.bridgelabz.addressbookapp.constants.Message;
 import com.bridgelabz.addressbookapp.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ import java.util.stream.Collectors;
 public class AddressBookExceptionHandler {
     @ExceptionHandler(value = AddressBookException.class)
     public ResponseEntity<ResponseDto> addressBookExceptionHandler(AddressBookException addressBookException) {
-        ResponseDto responseDto = new ResponseDto("Exception while processing REST Request", addressBookException.getMessage());
+        ResponseDto responseDto = new ResponseDto(Message.EXCEPTION_WHILE_REST_REQUEST.getMessage(), addressBookException.getMessage());
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto> methodArgNotValidExceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException){
         List<ObjectError> errorList = methodArgumentNotValidException.getBindingResult().getAllErrors();
         List<String> errMsg =errorList.stream().map(objErr -> objErr.getDefaultMessage()).collect(Collectors.toList());
-        ResponseDto responseDto = new ResponseDto("Exception while processing REST Request", errMsg);
+        ResponseDto responseDto = new ResponseDto(Message.EXCEPTION_WHILE_REST_REQUEST.getMessage(), errMsg);
         return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
     }
 }

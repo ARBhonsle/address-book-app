@@ -1,5 +1,7 @@
 package com.bridgelabz.addressbookapp;
 
+import com.bridgelabz.addressbookapp.constants.Message;
+import com.bridgelabz.addressbookapp.constants.Property;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,9 +13,9 @@ public class AddressBookAppApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(AddressBookAppApplication.class, args);
-        log.info("Employee Payroll Spring App Started");
-        log.info("Environment", context.getEnvironment().getProperty("environment"));
-        log.info("Employee DB username is {}", context.getEnvironment().getProperty("spring.datasource.username"));
+        log.info(Message.APP_STARTED_SUCCESSFULLY.getMessage());
+        log.info(Message.ENVIRONMENT.getMessage(), context.getEnvironment().getProperty(Property.ENVIRONMENT_PROPERTY.getProperty()));
+        log.info(Message.EMPLOYEE_DB_USERNAME.getMessage(), context.getEnvironment().getProperty(Property.DB_USERNAME_PROPERTY.getProperty()));
     }
 
 }

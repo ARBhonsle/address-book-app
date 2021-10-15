@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbookapp.controller;
 
+import com.bridgelabz.addressbookapp.constants.Message;
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import com.bridgelabz.addressbookapp.dto.ResponseDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
@@ -35,7 +36,7 @@ public class AddressBookController {
     @GetMapping(value = "/get-all")
     public ResponseEntity<ResponseDto> getAddressBookList() {
         List<AddressBook> addressBookList = addressBookServices.findAllAddressBook();
-        ResponseDto responseDto = new ResponseDto("GET request successful", addressBookList);
+        ResponseDto responseDto = new ResponseDto(Message.GET_ALL_SUCCESSFUL.getMessage(), addressBookList);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -49,7 +50,7 @@ public class AddressBookController {
     @GetMapping(value = "/get/{id}")
     public ResponseEntity<ResponseDto> getAddressBookByID(@PathVariable int id) {
         AddressBook addressBook = addressBookServices.findAddressBookById(id);
-        ResponseDto responseDto = new ResponseDto("GET request successful for id: " + id, addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.GET_BY_ID_SUCCESSFUL.getMessage(), addressBook);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -62,7 +63,7 @@ public class AddressBookController {
     @PostMapping(value = "/post")
     public ResponseEntity<ResponseDto> addAddressBook(@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.saveAddressBook(addressBookDto);
-        ResponseDto responseDto = new ResponseDto("POST request successful", addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.POST_SUCCESSFUL.getMessage(), addressBook);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -77,7 +78,7 @@ public class AddressBookController {
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
-        ResponseDto responseDto = new ResponseDto("PUT request successfully updates for id: " + id, addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.UPDATE_BY_ID_SUCCESSFUL.getMessage(), addressBook);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -91,7 +92,7 @@ public class AddressBookController {
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<ResponseDto> getAddressBookList(@PathVariable int id) {
         String response = addressBookServices.deleteAddressBook(id);
-        ResponseDto responseDto = new ResponseDto("DELETE request successful for id: " + id, response);
+        ResponseDto responseDto = new ResponseDto(Message.DELETE_SUCCESSFUL.getMessage(), response);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
