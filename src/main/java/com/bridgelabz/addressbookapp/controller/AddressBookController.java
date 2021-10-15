@@ -36,7 +36,7 @@ public class AddressBookController {
     public ResponseEntity<ResponseDto> getAddressBookList() {
         List<AddressBook> addressBookList = addressBookServices.findAllAddressBook();
         ResponseDto responseDto = new ResponseDto("GET request successful", addressBookList);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -50,7 +50,7 @@ public class AddressBookController {
     public ResponseEntity<ResponseDto> getAddressBookByID(@PathVariable int id) {
         AddressBook addressBook = addressBookServices.findAddressBookById(id);
         ResponseDto responseDto = new ResponseDto("GET request successful for id: " + id, addressBook);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -63,7 +63,7 @@ public class AddressBookController {
     public ResponseEntity<ResponseDto> addAddressBook(@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.saveAddressBook(addressBookDto);
         ResponseDto responseDto = new ResponseDto("POST request successful", addressBook);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -78,7 +78,7 @@ public class AddressBookController {
     public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
         ResponseDto responseDto = new ResponseDto("PUT request successfully updates for id: " + id, addressBook);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -92,6 +92,6 @@ public class AddressBookController {
     public ResponseEntity<ResponseDto> getAddressBookList(@PathVariable int id) {
         String response = addressBookServices.deleteAddressBook(id);
         ResponseDto responseDto = new ResponseDto("DELETE request successful for id: " + id, response);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

@@ -3,11 +3,11 @@ package com.bridgelabz.addressbookapp.services;
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
 import com.bridgelabz.addressbookapp.model.AddressBook;
-import com.bridgelabz.addressbookapp.repository.AddressBookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,27 +21,27 @@ import java.util.List;
 public class AddressBookServices {
 
     @Autowired
-    private AddressBookRepository addressBookRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    // list of employees
+    private static List<AddressBook> addressBookList = new ArrayList<>();
 
     /**
      *  method finds all address book from repository
      * @return List of address book
      */
     public List<AddressBook> findAllAddressBook() {
-        return addressBookRepository.findAll();
+        return addressBookList;
     }
 
     /**
-     * method finds address book by id
-     * @param id identifier in repository
+     * method finds address book by addressBookId
+     * @param addressBookId identifier in repository
      * @return address book
      * @throws AddressBookException
      */
-    public AddressBook findAddressBookById(int id) throws AddressBookException {
-        return addressBookRepository.findById(id).orElseThrow(() -> new AddressBookException("Cannot find Address book by id: " + id));
+    public AddressBook findAddressBookById(int addressBookId) throws AddressBookException {
+        return addressBookList.stream().filter(addressBookData->addressBookData.getId()==addressBookId).findFirst().orElseThrow(() -> new AddressBookException("Cannot find Address book by addressBookId: " + addressBookId));
     }
 
     /**
@@ -50,35 +50,35 @@ public class AddressBookServices {
      * @return address book
      */
     public AddressBook saveAddressBook(AddressBookDto addressBookDto) {
-        AddressBook addressBook = new AddressBook();
+        AddressBook addressBook = new AddressBook(addressBookList.size() + 1,addressBookDto);
         modelMapper.map(addressBookDto, addressBook);
-        addressBookRepository.save(addressBook);
+        addressBookList.add(addressBook);
         return addressBook;
     }
 
     /**
-     * method updates address book by id
-     * @param id identifier in repository
+     * method updates address book by addressBookId
+     * @param addressBookId identifier in repository
      * @param addressBookDto data stored in repository
      * @return address book
      * @throws AddressBookException
      */
-    public AddressBook updateAddressBook(int id, AddressBookDto addressBookDto) throws AddressBookException{
-        AddressBook addressBook = this.findAddressBookById(id);
+    public AddressBook updateAddressBook(int addressBookId, AddressBookDto addressBookDto) throws AddressBookException{
+        AddressBook addressBook = this.findAddressBookById(addressBookId);
         modelMapper.map(addressBookDto, addressBook);
-        addressBookRepository.save(addressBook);
+        addressBookList.set(addressBookId - 1, addressBook);
         return addressBook;
     }
 
     /**
-     * method deletes address book by id
-     * @param id identifier in repository
+     * method deletes address book by addressBookId
+     * @param addressBookId identifier in repository
      * @return address book
      * @throws AddressBookException
      */
-    public String deleteAddressBook(int id) throws AddressBookException {
-        AddressBook addressBook = this.findAddressBookById(id);
-        addressBookRepository.delete(addressBook);
-        return "Successfully deleted address book by id: " + id;
+    public String deleteAddressBook(int addressBookId) throws AddressBookException {
+        AddressBook addressBook = this.findAddressBookById(addressBookId);
+        addressBookList.remove(addressBook);
+        return "Successfully deleted address book by addressBookId: " + addressBookId;
     }
 }
