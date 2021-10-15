@@ -2,10 +2,7 @@ package com.bridgelabz.addressbookapp.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Address book is object which stores details stored, updated or fetched by clients via http requests
@@ -15,11 +12,12 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
+@Table(name = "ADDRESS_BOOK")
 public class AddressBook {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private String address;
-    private long pinCode;
+    private String pinCode;
 }
