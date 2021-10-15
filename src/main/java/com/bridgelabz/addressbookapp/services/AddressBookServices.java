@@ -28,7 +28,7 @@ public class AddressBookServices {
     private static List<AddressBook> addressBookList = new ArrayList<>();
 
     /**
-     *  method finds all address book from repository
+     *  method finds all address book from list
      * @return List of address book
      */
     public List<AddressBook> findAllAddressBook() {
@@ -37,7 +37,7 @@ public class AddressBookServices {
 
     /**
      * method finds address book by addressBookId
-     * @param addressBookId identifier in repository
+     * @param addressBookId identifier in list
      * @return address book
      * @throws AddressBookException
      */
@@ -47,7 +47,7 @@ public class AddressBookServices {
 
     /**
      * method stores address book into repository
-     * @param addressBookDto data stored in repository
+     * @param addressBookDto data stored in list
      * @return address book
      */
     public AddressBook saveAddressBook(AddressBookDto addressBookDto) {
@@ -60,7 +60,7 @@ public class AddressBookServices {
     /**
      * method updates address book by addressBookId
      * @param addressBookId identifier in repository
-     * @param addressBookDto data stored in repository
+     * @param addressBookDto data stored in list
      * @return address book
      * @throws AddressBookException
      */
@@ -73,7 +73,7 @@ public class AddressBookServices {
 
     /**
      * method deletes address book by addressBookId
-     * @param addressBookId identifier in repository
+     * @param addressBookId identifier in list
      * @return address book
      * @throws AddressBookException
      */

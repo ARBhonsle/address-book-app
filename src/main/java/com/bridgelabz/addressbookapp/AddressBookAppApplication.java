@@ -7,6 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * AddressBookApplication runs application
+ * @author Aditi
+ * @version 0.0.1
+ * @since 15-10-2021
+ */
 @Slf4j
 @SpringBootApplication
 public class AddressBookAppApplication {
