@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -59,7 +60,7 @@ public class AddressBookController {
      * @return ResponseEntity<ResponseDto>
      */
     @PostMapping(value = "/post")
-    public ResponseEntity<ResponseDto> addAddressBook(@RequestBody AddressBookDto addressBookDto) {
+    public ResponseEntity<ResponseDto> addAddressBook(@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.saveAddressBook(addressBookDto);
         ResponseDto responseDto = new ResponseDto("POST request successful", addressBook);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
@@ -74,7 +75,7 @@ public class AddressBookController {
      * @throws AddressBookException
      */
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id, @RequestBody AddressBookDto addressBookDto) {
+    public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
         AddressBook addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
         ResponseDto responseDto = new ResponseDto("PUT request successfully updates for id: " + id, addressBook);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);

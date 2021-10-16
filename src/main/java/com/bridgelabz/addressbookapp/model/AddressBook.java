@@ -21,7 +21,7 @@ public class AddressBook {
     @Column(name = "address_book_name")
     private String name;
     private String address;
-    private long pinCode;
+    private String pinCode;
 
     public AddressBook() {
     }
