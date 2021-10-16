@@ -1,9 +1,9 @@
 package com.bridgelabz.addressbookapp.controller;
 
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
+import com.bridgelabz.addressbookapp.dto.ResponseAddressBookDto;
 import com.bridgelabz.addressbookapp.dto.ResponseDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
-import com.bridgelabz.addressbookapp.model.AddressBook;
 import com.bridgelabz.addressbookapp.services.AddressBookServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * AddressBookController caters to REST Http Requests from clients
@@ -34,7 +33,7 @@ public class AddressBookController {
      */
     @GetMapping(value = "/get-all")
     public ResponseEntity<ResponseDto> getAddressBookList() {
-        List<AddressBook> addressBookList = addressBookServices.findAllAddressBook();
+        ResponseAddressBookDto addressBookList = addressBookServices.findAllAddressBook();
         ResponseDto responseDto = new ResponseDto("GET request successful", addressBookList);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
@@ -48,7 +47,7 @@ public class AddressBookController {
      */
     @GetMapping(value = "/get/{id}")
     public ResponseEntity<ResponseDto> getAddressBookByID(@PathVariable int id) {
-        AddressBook addressBook = addressBookServices.findAddressBookById(id);
+        ResponseAddressBookDto addressBook = addressBookServices.findAddressBookById(id);
         ResponseDto responseDto = new ResponseDto("GET request successful for id: " + id, addressBook);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
@@ -61,7 +60,7 @@ public class AddressBookController {
      */
     @PostMapping(value = "/post")
     public ResponseEntity<ResponseDto> addAddressBook(@Valid @RequestBody AddressBookDto addressBookDto) {
-        AddressBook addressBook = addressBookServices.saveAddressBook(addressBookDto);
+        ResponseAddressBookDto addressBook = addressBookServices.saveAddressBook(addressBookDto);
         ResponseDto responseDto = new ResponseDto("POST request successful", addressBook);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }
@@ -69,16 +68,16 @@ public class AddressBookController {
     /**
      * Update address book by id
      *
-     * @param id             url path of http request
+     * @param id url path of http request
      * @param addressBookDto in RequestBody
      * @return ResponseEntity<ResponseDto>
      * @throws AddressBookException
      */
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
-        AddressBook addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
+        ResponseAddressBookDto addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
         ResponseDto responseDto = new ResponseDto("PUT request successfully updates for id: " + id, addressBook);
-        return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /**
@@ -90,7 +89,7 @@ public class AddressBookController {
      */
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<ResponseDto> getAddressBookList(@PathVariable int id) {
-        String response = addressBookServices.deleteAddressBook(id);
+        ResponseAddressBookDto response = addressBookServices.deleteAddressBook(id);
         ResponseDto responseDto = new ResponseDto("DELETE request successful for id: " + id, response);
         return new ResponseEntity<ResponseDto>(responseDto, HttpStatus.OK);
     }

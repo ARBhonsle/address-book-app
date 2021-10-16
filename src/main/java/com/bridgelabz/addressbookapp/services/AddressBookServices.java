@@ -1,15 +1,16 @@
 package com.bridgelabz.addressbookapp.services;
 
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
+import com.bridgelabz.addressbookapp.dto.ResponseAddressBookDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
 import com.bridgelabz.addressbookapp.model.AddressBook;
-//import com.bridgelabz.addressbookapp.repository.AddressBookRepository;
+import com.bridgelabz.addressbookapp.repository.AddressBookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Address book Service has methods used by controller class
@@ -21,73 +22,84 @@ import java.util.List;
 @Service
 public class AddressBookServices {
 
-//    @Autowired
-//    private AddressBookRepository addressBookRepository;
+    @Autowired
+    private AddressBookRepository addressBookRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    // list of employees
-    private static List<AddressBook> addressBookList = new ArrayList<>();
 
     /**
-     * method finds all address book from list
+     * method finds all address book from repository
      *
-     * @return List of address book
+     * @return ResponseAddressBookDto
      */
-    public List<AddressBook> findAllAddressBook() {
-        return addressBookList;
+    public List<AddressBookDto> findAllAddressBook() {
+        return addressBookRepository.findAll().stream()
+                .map(addressBookDO -> modelMapper.map(addressBookDO, AddressBookDto.class))
+                .collect(Collectors.toList());
+    }
+
+    private AddressBook getAddressBookById(int addressBookId) throws AddressBookException{
+        return addressBookRepository.findById(addressBookId).orElseThrow(() -> new AddressBookException("Cannot find Address book by addressBookId: " + addressBookId));
     }
 
     /**
      * method finds address book by addressBookId
      *
-     * @param addressBookId identifier in list
-     * @return address book
+     * @param addressBookId identifier in repository
+     * @return ResponseAddressBookDto
      * @throws AddressBookException
      */
-    public AddressBook findAddressBookById(int addressBookId) throws AddressBookException {
-        return addressBookList.stream().filter(addressBookData -> addressBookData.getId() == addressBookId).findFirst().orElseThrow(() -> new AddressBookException("Cannot find Address book by addressBookId: " + addressBookId));
+    public ResponseAddressBookDto findAddressBookById(int addressBookId) throws AddressBookException {
+        ResponseAddressBookDto responseAddressBookDto = new ResponseAddressBookDto();
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
+        modelMapper.map(addressBook,responseAddressBookDto);
+        return responseAddressBookDto;
     }
 
     /**
-     * method stores address book into list
+     * method stores address book into repository
      *
-     * @param addressBookDto data stored in list
-     * @return address book
+     * @param addressBookDto data stored in repository
+     * @return ResponseAddressBookDto
      */
-    public AddressBook saveAddressBook(AddressBookDto addressBookDto) {
-        AddressBook addressBook = new AddressBook(addressBookList.size() + 1, addressBookDto);
-        modelMapper.map(addressBookDto, AddressBook.class);
-        addressBookList.add(addressBook);
-        return addressBook;
+    public ResponseAddressBookDto saveAddressBook(AddressBookDto addressBookDto) {
+        ResponseAddressBookDto responseAddressBookDto = new ResponseAddressBookDto();
+        AddressBook addressBook = new AddressBook();
+        modelMapper.map(addressBookDto, addressBook);
+        addressBookRepository.save(addressBook);
+        modelMapper.map(addressBook,responseAddressBookDto);
+        return responseAddressBookDto;
     }
 
     /**
      * method updates address book by addressBookId
      *
-     * @param addressBookId  identifier in list
-     * @param addressBookDto data stored in list
-     * @return address book
+     * @param addressBookId  identifier in repository
+     * @param addressBookDto data stored in repository
+     * @return ResponseAddressBookDto
      * @throws AddressBookException
      */
-    public AddressBook updateAddressBook(int addressBookId, AddressBookDto addressBookDto) throws AddressBookException {
-        AddressBook addressBook = this.findAddressBookById(addressBookId);
+    public ResponseAddressBookDto updateAddressBook(int addressBookId, AddressBookDto addressBookDto) throws AddressBookException {
+        ResponseAddressBookDto responseAddressBookDto = new ResponseAddressBookDto();
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
         modelMapper.map(addressBookDto, addressBook);
-        addressBookList.set(addressBookId - 1, addressBook);
-        return addressBook;
+        addressBookRepository.save( addressBook);
+        modelMapper.map(addressBook,responseAddressBookDto);
+        return responseAddressBookDto;
     }
 
     /**
      * method deletes address book by addressBookId
      *
-     * @param addressBookId identifier in list
-     * @return address book
+     * @param addressBookId identifier in repository
+     * @return ResponseAddressBookDto
      * @throws AddressBookException
      */
-    public String deleteAddressBook(int addressBookId) throws AddressBookException {
-        AddressBook addressBook = this.findAddressBookById(addressBookId);
-        addressBookList.remove(addressBook);
-        return "Successfully deleted address book by addressBookId: " + addressBookId;
+    public ResponseAddressBookDto deleteAddressBook(int addressBookId) throws AddressBookException {
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
+        addressBookRepository.delete(addressBook);
+        return null;
     }
 }
