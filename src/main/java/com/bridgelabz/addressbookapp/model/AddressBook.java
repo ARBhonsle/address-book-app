@@ -1,11 +1,9 @@
 package com.bridgelabz.addressbookapp.model;
 
+import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Address book is object which stores details stored, updated or fetched by clients via http requests
@@ -18,8 +16,20 @@ import javax.persistence.Id;
 public class AddressBook {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "address_book_id")
     private int id;
+    @Column(name = "address_book_name")
     private String name;
     private String address;
     private long pinCode;
+
+    public AddressBook() {
+    }
+
+    public AddressBook(int id, AddressBookDto addressBookDto) {
+        this.id = id;
+        this.name = addressBookDto.getName();
+        this.address = addressBookDto.getAddress();
+        this.pinCode = addressBookDto.getPinCode();
+    }
 }
