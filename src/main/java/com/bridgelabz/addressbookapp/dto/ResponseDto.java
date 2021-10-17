@@ -6,6 +6,7 @@ import lombok.Setter;
 
 /**
  * Response Dto transfers data to object of response to http request to clients
+ *
  * @author Aditi
  * version 0.0.1
  * @since 13-10-2021
