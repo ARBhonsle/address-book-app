@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbookapp.model;
 
+import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,4 +33,22 @@ public class AddressBook {
     private String state;
     private String phoneNo;
     private String email;
+
+    public AddressBook() {
+    }
+
+    public AddressBook(AddressBookDto addressBookDto) {
+        this.updateAddressBook(addressBookDto);
+    }
+
+    public void updateAddressBook(AddressBookDto addressBookDto) {
+        this.fname = addressBookDto.getFname();
+        this.lname = addressBookDto.getLname();
+        this.address = addressBookDto.getAddress();
+        this.pinCode = addressBookDto.getPinCode();
+        this.city = addressBookDto.getCity();
+        this.state = addressBookDto.getState();
+        this.phoneNo = addressBookDto.getPhoneNo();
+        this.email = addressBookDto.getEmail();
+    }
 }

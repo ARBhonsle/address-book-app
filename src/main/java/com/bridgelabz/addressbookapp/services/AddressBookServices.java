@@ -59,6 +59,7 @@ public class AddressBookServices {
      */
     public ResponseDto saveAddressBook(AddressBookDto addressBookDto) {
         AddressBook addressBook = new AddressBook();
+        addressBook.updateAddressBook(addressBookDto);
         modelMapper.map(addressBookDto, addressBook);
         addressBookRepository.save(addressBook);
         ResponseDto responseDto = new ResponseDto(Message.POST_SUCCESSFUL.getMessage(), addressBook);
