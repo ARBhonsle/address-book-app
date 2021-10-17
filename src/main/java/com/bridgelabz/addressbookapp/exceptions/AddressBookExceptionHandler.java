@@ -8,7 +8,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +28,12 @@ public class AddressBookExceptionHandler {
         ResponseDto responseDto = new ResponseDto(Message.EXCEPTION_WHILE_REST_REQUEST.getMessage(), addressBookException.getMessage());
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseDto> methodArgNotValidExceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException){
+    public ResponseEntity<ResponseDto> methodArgNotValidExceptionHandler(MethodArgumentNotValidException methodArgumentNotValidException) {
         List<ObjectError> errorList = methodArgumentNotValidException.getBindingResult().getAllErrors();
-        List<String> errMsg =errorList.stream().map(objErr -> objErr.getDefaultMessage()).collect(Collectors.toList());
+        List<String> errMsg = errorList.stream().map(objErr -> objErr.getDefaultMessage()).collect(Collectors.toList());
         ResponseDto responseDto = new ResponseDto(Message.EXCEPTION_WHILE_REST_REQUEST.getMessage(), errMsg);
-        return new ResponseEntity<>(responseDto,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 }

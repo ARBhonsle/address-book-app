@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * AddressBookConfig sets up configuration of additional beans required in application
+ *
  * @author Aditi
  * version 0.0.1
  * @since 13-10-2021
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AddressBookConfig {
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 }

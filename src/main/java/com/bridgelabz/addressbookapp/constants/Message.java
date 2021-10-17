@@ -1,6 +1,8 @@
 package com.bridgelabz.addressbookapp.constants;
+
 /**
  * Message for defining all responses for requests, exceptions and messages
+ *
  * @author Aditi
  * @version 0.0.1
  * @since 15-10-2021

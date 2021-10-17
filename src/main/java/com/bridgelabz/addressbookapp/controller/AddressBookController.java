@@ -64,13 +64,13 @@ public class AddressBookController {
     /**
      * Update address book by id
      *
-     * @param id url path of http request
+     * @param id             url path of http request
      * @param addressBookDto in RequestBody
      * @return ResponseEntity<ResponseDto>
      * @throws AddressBookException
      */
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
+    public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id, @Valid @RequestBody AddressBookDto addressBookDto) {
         ResponseDto responseDto = addressBookServices.updateAddressBook(id, addressBookDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
