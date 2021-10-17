@@ -2,14 +2,14 @@ package com.bridgelabz.addressbookapp.services;
 
 import com.bridgelabz.addressbookapp.constants.Message;
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
+import com.bridgelabz.addressbookapp.dto.ResponseDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
 import com.bridgelabz.addressbookapp.model.AddressBook;
+import com.bridgelabz.addressbookapp.repository.AddressBookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Address book Service has methods used by controller class
@@ -24,62 +24,72 @@ public class AddressBookServices {
     @Autowired
     private ModelMapper modelMapper;
 
-    // list of employees
-    private static List<AddressBook> addressBookList = new ArrayList<>();
+    @Autowired
+    private AddressBookRepository addressBookRepository;
 
     /**
-     *  method finds all address book from list
+     *  method finds all address book from repository
      * @return List of address book
      */
-    public List<AddressBook> findAllAddressBook() {
-        return addressBookList;
+    public ResponseDto findAllAddressBook() {
+        ResponseDto responseDto = new ResponseDto(Message.GET_ALL_SUCCESSFUL.getMessage(), addressBookRepository.findAll());
+        return responseDto;
     }
 
     /**
      * method finds address book by addressBookId
-     * @param addressBookId identifier in list
+     * @param addressBookId identifier in repository
      * @return address book
-     * @throws AddressBookException
+     * @throws AddressBookException if findById returns null
      */
-    public AddressBook findAddressBookById(int addressBookId) throws AddressBookException {
-        return addressBookList.stream().filter(addressBookData->addressBookData.getId()==addressBookId).findFirst().orElseThrow(() -> new AddressBookException(Message.EXCEPTION_WHILE_FINDING_ID.getMessage()));
+    private AddressBook getAddressBookById(int addressBookId) throws AddressBookException {
+        return addressBookRepository.findById(addressBookId).orElseThrow(() -> new AddressBookException(Message.EXCEPTION_WHILE_FINDING_ID.getMessage()));
+    }
+
+    public ResponseDto findAddressBookById(int addressBookId) throws AddressBookException {
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
+        ResponseDto responseDto = new ResponseDto(Message.GET_BY_ID_SUCCESSFUL.getMessage(), addressBook);
+        return responseDto;
     }
 
     /**
      * method stores address book into repository
-     * @param addressBookDto data stored in list
+     * @param addressBookDto data stored in repository
      * @return address book
      */
-    public AddressBook saveAddressBook(AddressBookDto addressBookDto) {
-        AddressBook addressBook = new AddressBook(addressBookList.size() + 1,addressBookDto);
+    public ResponseDto saveAddressBook(AddressBookDto addressBookDto) {
+        AddressBook addressBook = new AddressBook();
         modelMapper.map(addressBookDto, addressBook);
-        addressBookList.add(addressBook);
-        return addressBook;
+        addressBookRepository.save(addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.POST_SUCCESSFUL.getMessage(), addressBook);
+        return responseDto;
     }
 
     /**
      * method updates address book by addressBookId
      * @param addressBookId identifier in repository
-     * @param addressBookDto data stored in list
+     * @param addressBookDto data stored in repository
      * @return address book
-     * @throws AddressBookException
+     * @throws AddressBookException if findById returns null
      */
-    public AddressBook updateAddressBook(int addressBookId, AddressBookDto addressBookDto) throws AddressBookException{
-        AddressBook addressBook = this.findAddressBookById(addressBookId);
+    public ResponseDto updateAddressBook(int addressBookId, AddressBookDto addressBookDto) throws AddressBookException{
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
         modelMapper.map(addressBookDto, addressBook);
-        addressBookList.set(addressBookId - 1, addressBook);
-        return addressBook;
+        addressBookRepository.save(addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.UPDATE_BY_ID_SUCCESSFUL.getMessage(), addressBook);
+        return responseDto;
     }
 
     /**
      * method deletes address book by addressBookId
      * @param addressBookId identifier in list
      * @return address book
-     * @throws AddressBookException
+     * @throws AddressBookException if findById returns null
      */
-    public String deleteAddressBook(int addressBookId) throws AddressBookException {
-        AddressBook addressBook = this.findAddressBookById(addressBookId);
-        addressBookList.remove(addressBook);
-        return Message.DELETE_SUCCESS_RESPONSE.getMessage();
+    public ResponseDto deleteAddressBook(int addressBookId) throws AddressBookException {
+        AddressBook addressBook = this.getAddressBookById(addressBookId);
+        addressBookRepository.delete(addressBook);
+        ResponseDto responseDto = new ResponseDto(Message.DELETE_SUCCESSFUL.getMessage(), Message.DELETE_SUCCESS_RESPONSE.getMessage());
+        return responseDto;
     }
 }

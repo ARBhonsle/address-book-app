@@ -1,10 +1,8 @@
 package com.bridgelabz.addressbookapp.controller;
 
-import com.bridgelabz.addressbookapp.constants.Message;
 import com.bridgelabz.addressbookapp.dto.AddressBookDto;
 import com.bridgelabz.addressbookapp.dto.ResponseDto;
 import com.bridgelabz.addressbookapp.exceptions.AddressBookException;
-import com.bridgelabz.addressbookapp.model.AddressBook;
 import com.bridgelabz.addressbookapp.services.AddressBookServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * AddressBookController caters to REST Http Requests from clients
@@ -35,8 +32,7 @@ public class AddressBookController {
      */
     @GetMapping(value = "/get-all")
     public ResponseEntity<ResponseDto> getAddressBookList() {
-        List<AddressBook> addressBookList = addressBookServices.findAllAddressBook();
-        ResponseDto responseDto = new ResponseDto(Message.GET_ALL_SUCCESSFUL.getMessage(), addressBookList);
+        ResponseDto responseDto = addressBookServices.findAllAddressBook();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -49,8 +45,7 @@ public class AddressBookController {
      */
     @GetMapping(value = "/get/{id}")
     public ResponseEntity<ResponseDto> getAddressBookByID(@PathVariable int id) {
-        AddressBook addressBook = addressBookServices.findAddressBookById(id);
-        ResponseDto responseDto = new ResponseDto(Message.GET_BY_ID_SUCCESSFUL.getMessage(), addressBook);
+        ResponseDto responseDto = addressBookServices.findAddressBookById(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -62,8 +57,7 @@ public class AddressBookController {
      */
     @PostMapping(value = "/post")
     public ResponseEntity<ResponseDto> addAddressBook(@Valid @RequestBody AddressBookDto addressBookDto) {
-        AddressBook addressBook = addressBookServices.saveAddressBook(addressBookDto);
-        ResponseDto responseDto = new ResponseDto(Message.POST_SUCCESSFUL.getMessage(), addressBook);
+        ResponseDto responseDto = addressBookServices.saveAddressBook(addressBookDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -77,8 +71,7 @@ public class AddressBookController {
      */
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseDto> updateAddressBook(@PathVariable int id,@Valid @RequestBody AddressBookDto addressBookDto) {
-        AddressBook addressBook = addressBookServices.updateAddressBook(id, addressBookDto);
-        ResponseDto responseDto = new ResponseDto(Message.UPDATE_BY_ID_SUCCESSFUL.getMessage(), addressBook);
+        ResponseDto responseDto = addressBookServices.updateAddressBook(id, addressBookDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -91,8 +84,7 @@ public class AddressBookController {
      */
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<ResponseDto> getAddressBookList(@PathVariable int id) {
-        String response = addressBookServices.deleteAddressBook(id);
-        ResponseDto responseDto = new ResponseDto(Message.DELETE_SUCCESSFUL.getMessage(), response);
+        ResponseDto responseDto = addressBookServices.deleteAddressBook(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

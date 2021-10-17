@@ -29,6 +29,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.4'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '4.0.0'
+
 }
 
 test {
